@@ -31,7 +31,7 @@ public class Account {
 		this.audit = builder.audit;
 	}
 	
-	public AccountBuilder create() {
+	public static AccountBuilder create() {
 		return new AccountBuilder();
 	}
 
@@ -45,6 +45,10 @@ public class Account {
 
 	public double getBalance() {
 		return balance;
+	}
+	
+	public Audit getAudit() {
+		return audit;
 	}
 
 	public static class AccountBuilder {
@@ -60,6 +64,7 @@ public class Account {
 		public AccountBuilder() {
 			this.audit = new Audit();
 			this.accountNumber = UUID.randomUUID().toString();
+			this.balance = 0d;
 		}
 		
 		public AccountBuilder setAccountNumber(String accountNumber) {
