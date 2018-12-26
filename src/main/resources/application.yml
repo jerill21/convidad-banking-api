@@ -1,0 +1,20 @@
+spring:
+
+# Database
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: Bank
+
+server:
+  port: 8080
+  
+  # Logging
+logging:
+  pattern:
+    console: "%d CONVIDAD BANKING API %t %-5level %logger : %msg%n"
+  level:
+    com.convidad: DEBUG
+    org.springframework: INFO
+    org.mongodb: WARN
