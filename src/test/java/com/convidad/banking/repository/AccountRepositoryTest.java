@@ -1,6 +1,7 @@
 package com.convidad.banking.repository;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,14 +17,32 @@ public class AccountRepositoryTest {
 	@Autowired
 	private AccountRepository accountRepository;
 
+	@Before
+	public void beforeTest() {
+		accountRepository.deleteAll();
+	}
+	
+	private static final String userTest = "User1";
+	
 	@Test
 	public void createAttempt_accept() {
-		Account account = accountRepository.save(Account.create().setUserId("User1").build());
+		Account account = accountRepository.save(Account.create().setUserId(userTest).build());
 		Assert.assertNotNull(account);
-		Assert.assertEquals("User1", account.getUserId());
+		Assert.assertEquals(userTest, account.getUserId());
 		Assert.assertEquals(new Double(0), new Double(account.getBalance()));
 		Assert.assertNotNull(account.getAccountNumber());
 		Assert.assertNotNull(account.getAudit());
 		Assert.assertNotNull(account.getAudit().getCreationDate());
+	}
+	
+	@Test
+	public void findByUserIdAndAccountNumber_reject() {
+		Assert.assertNull(accountRepository.findByAccountNumber("made_up_account"));
+	}
+	
+	@Test
+	public void findByUserIdAndAccountNumber_accept() {
+		Account account = accountRepository.save(Account.create().setUserId(userTest).build());
+		Assert.assertNotNull(accountRepository.findByAccountNumber(account.getAccountNumber()));
 	}
 }

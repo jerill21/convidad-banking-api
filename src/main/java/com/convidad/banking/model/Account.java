@@ -20,17 +20,20 @@ public class Account {
 
 	@Field("balance")
 	private double balance;
-	
+
 	@Field("audit")
 	private Audit audit;
-	
+
 	private Account(AccountBuilder builder) {
 		this.accountNumber = builder.accountNumber;
 		this.userId = builder.userId;
 		this.balance = builder.balance;
 		this.audit = builder.audit;
 	}
-	
+
+	public Account() {
+	}
+
 	public static AccountBuilder create() {
 		return new AccountBuilder();
 	}
@@ -46,7 +49,15 @@ public class Account {
 	public double getBalance() {
 		return balance;
 	}
-	
+
+	public void deposit(double deposit) {
+		this.balance += deposit;
+	}
+
+	public void withdraw(double amount) {
+		this.balance -= amount;
+	}
+
 	public Audit getAudit() {
 		return audit;
 	}
@@ -58,20 +69,20 @@ public class Account {
 		private String userId;
 
 		private double balance;
-		
+
 		private Audit audit;
-		
+
 		public AccountBuilder() {
 			this.audit = new Audit();
 			this.accountNumber = UUID.randomUUID().toString();
 			this.balance = 0d;
 		}
-		
+
 		public AccountBuilder setAccountNumber(String accountNumber) {
 			this.accountNumber = accountNumber;
 			return this;
 		}
-		
+
 		public AccountBuilder setUserId(String userId) {
 			this.userId = userId;
 			return this;
