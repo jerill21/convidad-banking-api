@@ -36,12 +36,12 @@ public class AccountRepositoryTest {
 	}
 	
 	@Test
-	public void findByUserIdAndAccountNumber_reject() {
+	public void findByAccountNumber_reject() {
 		Assert.assertNull(accountRepository.findByAccountNumber("made_up_account"));
 	}
 	
 	@Test
-	public void findByUserIdAndAccountNumber_accept() {
+	public void findByAccountNumber_accept() {
 		Account account = accountRepository.save(Account.create().setUserId(userTest).build());
 		Assert.assertNotNull(accountRepository.findByAccountNumber(account.getAccountNumber()));
 	}

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.convidad.banking.controller.request.CreateAccountRequest;
@@ -25,39 +24,38 @@ import com.convidad.banking.service.IAccountService;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
-@RequestMapping("/api/accounts")
 public class AccountController {
 
 	@Autowired
 	private IAccountService accountService;
 
 	@ApiOperation(value = "Create an account binded to user", consumes = MediaType.APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE, notes = "Provide a valid userId")
-	@PostMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/accounts", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
 	public CreateAccountResponse createAccount(@RequestBody CreateAccountRequest request) {
 		return new CreateAccountResponse(accountService.createAccount(request.getUserId()));
 	}
 
 	@ApiOperation(value = "Deposit money to user account", consumes = MediaType.APPLICATION_JSON_VALUE, notes = "Provide a valid account number")
-	@PatchMapping(value = "/deposit", consumes = APPLICATION_JSON_VALUE)
+	@PatchMapping(value = "/accounts/deposit", consumes = APPLICATION_JSON_VALUE)
 	public void deposit(@RequestBody UpdateBalanceRequest request) {
 		accountService.deposit(request);
 	}
 
 	@ApiOperation(value = "Withdraw money from user account", consumes = MediaType.APPLICATION_JSON_VALUE, notes = "Provide a valid account number")
-	@PatchMapping(value = "/withdraw", consumes = APPLICATION_JSON_VALUE)
+	@PatchMapping(value = "/accounts/withdraw", consumes = APPLICATION_JSON_VALUE)
 	public void withdraw(@RequestBody UpdateBalanceRequest request) {
 		accountService.withdraw(request);
 	}
 
 	@ApiOperation(value = "Get account information", consumes = MediaType.APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE, notes = "Provide a valid accountNumber")
-	@GetMapping(value = "/{accountNumber}", produces = APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/accounts/{accountNumber}", produces = APPLICATION_JSON_VALUE)
 	public AccountResponse getAccount(@PathVariable String accountNumber) {
 		Account account = accountService.getAccount(accountNumber);
 		return new AccountResponse(account.getAccountNumber(), account.getUserId(), account.getBalance());
 	}
 
-	@ApiOperation(value = "Create an account binded to user", produces = APPLICATION_JSON_VALUE, notes = "Provide a valid userId")
-	@GetMapping(value = "/user/{userId}", produces = APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Get user accounts", produces = APPLICATION_JSON_VALUE, notes = "Provide a valid userId")
+	@GetMapping(value = "/accounts/user/{userId}", produces = APPLICATION_JSON_VALUE)
 	public UserAccountsResponse getUserAccounts(@PathVariable String userId) {
 		return new UserAccountsResponse(userId, accountService.getUserAccounts(userId).stream()
 				.map(x -> new AccountResponse(x.getAccountNumber(), x.getUserId(), x.getBalance())).collect(Collectors.toList()));

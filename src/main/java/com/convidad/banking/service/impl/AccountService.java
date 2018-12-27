@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
+import com.convidad.banking.BusinessException;
 import com.convidad.banking.controller.request.UpdateBalanceRequest;
 import com.convidad.banking.model.Account;
 import com.convidad.banking.repository.AccountRepository;
@@ -21,6 +22,9 @@ public class AccountService implements IAccountService {
 		if (!StringUtils.isEmpty(userId)) {
 			accountId = accountRepository.save(Account.create().setUserId(userId).build()).getAccountNumber();
 		}
+		else {
+			throw new BusinessException("UserId is required");
+		}
 		return accountId;
 	}
 
@@ -30,6 +34,8 @@ public class AccountService implements IAccountService {
 		if (account != null) {
 			account.deposit(request.getAmount());
 			accountRepository.save(account);
+		} else {
+			throw new BusinessException("Unexisting account");
 		}
 	}
 
@@ -39,12 +45,20 @@ public class AccountService implements IAccountService {
 		if (account != null) {
 			account.withdraw(request.getAmount());
 			accountRepository.save(account);
-		}		
+		} else {
+			throw new BusinessException("Unexisting account");
+		}
 	}
 
 	@Override
 	public Account getAccount(final String accountNumber) {
-		return accountRepository.findByAccountNumber(accountNumber);
+		Account account = accountRepository.findByAccountNumber(accountNumber);
+		if (account != null) {
+			return account;
+		} else {
+			throw new BusinessException("Unexisting account");
+		}
+
 	}
 
 	@Override
