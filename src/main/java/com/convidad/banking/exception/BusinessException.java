@@ -1,4 +1,4 @@
-package com.convidad.banking;
+package com.convidad.banking.exception;
 
 public class BusinessException extends RuntimeException {
 

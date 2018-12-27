@@ -78,18 +78,8 @@ public class Account {
 			this.balance = 0d;
 		}
 
-		public AccountBuilder setAccountNumber(String accountNumber) {
-			this.accountNumber = accountNumber;
-			return this;
-		}
-
 		public AccountBuilder setUserId(String userId) {
 			this.userId = userId;
-			return this;
-		}
-
-		public AccountBuilder setBalance(double balance) {
-			this.balance = balance;
 			return this;
 		}
 

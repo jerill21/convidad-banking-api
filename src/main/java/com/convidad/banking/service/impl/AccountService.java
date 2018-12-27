@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
-import com.convidad.banking.BusinessException;
 import com.convidad.banking.controller.request.UpdateBalanceRequest;
+import com.convidad.banking.exception.BusinessException;
 import com.convidad.banking.model.Account;
 import com.convidad.banking.repository.AccountRepository;
 import com.convidad.banking.service.IAccountService;
