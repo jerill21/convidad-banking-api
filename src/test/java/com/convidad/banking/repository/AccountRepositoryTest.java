@@ -25,7 +25,7 @@ public class AccountRepositoryTest {
 	private static final String userTest = "User1";
 	
 	@Test
-	public void createAttempt_accept() {
+	public void createAccount_accept() {
 		Account account = accountRepository.save(Account.create().setUserId(userTest).build());
 		Assert.assertNotNull(account);
 		Assert.assertEquals(userTest, account.getUserId());
